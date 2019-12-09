@@ -207,7 +207,7 @@ export abstract class GraphQLProject implements GraphQLSchemaProvider {
 
   fileWasDeleted(uri: DocumentUri) {
     this.removeGraphQLDocumentsFor(uri);
-    this.checkForDuplicateOperations();
+    this.checkForDuplicateDefinitions();
   }
 
   documentDidChange(document: TextDocument) {
@@ -221,21 +221,24 @@ export abstract class GraphQLProject implements GraphQLSchemaProvider {
     } else {
       this.removeGraphQLDocumentsFor(document.uri);
     }
-    this.checkForDuplicateOperations();
+    this.checkForDuplicateDefinitions();
   }
 
-  checkForDuplicateOperations(): void {
-    const operations = Object.create(null);
+  checkForDuplicateDefinitions(): void {
+    const definitions = Object.create(null);
     for (const document of this.documents) {
       if (!document.ast) continue;
       for (const definition of document.ast.definitions) {
-        if (definition.kind === Kind.OPERATION_DEFINITION && definition.name) {
-          if (operations[definition.name.value]) {
+        if ("name" in definition && definition.name) {
+          if (!definitions[definition.kind]) {
+            definitions[definition.kind] = Object.create(null);
+          }
+          if (definitions[definition.kind][definition.name.value]) {
             throw new Error(
-              `️️There are multiple definitions for the ${definition.name.value} operation. All operations in a project must have unique names. If generating types, only the types for the first definition found will be generated.`
+              `️️There are multiple definitions for ${definition.name.value}. All ${definition.kind}s in a project must have unique names. If generating types, only the types for the first definition found will be generated.`
             );
           }
-          operations[definition.name.value] = definition;
+          definitions[definition.kind][definition.name.value] = definition;
         }
       }
     }

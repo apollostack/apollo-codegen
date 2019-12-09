@@ -4,6 +4,7 @@
 
 - `apollo`
   - Rename "Engine" to "Apollo Graph Manager" in ouput [#1705](https://github.com/apollographql/apollo-tooling/pull/1705)
+  - Check for duplicate definitions across all types (Operations, Fragments, etc.) [#1707](https://github.com/apollographql/apollo-tooling/pull/1707)
 - `apollo-codegen-flow`
   - <First `apollo-codegen-flow` related entry goes here>
 - `apollo-codegen-scala`
