@@ -275,6 +275,10 @@ export abstract class GraphQLProject implements GraphQLSchemaProvider {
 
   abstract validate(): void;
 
+  close() {
+    this.fileSet.close();
+  }
+
   clearAllDiagnostics() {
     if (!this._onDiagnostics) return;
 

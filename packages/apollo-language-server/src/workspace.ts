@@ -164,6 +164,7 @@ export class GraphQLWorkspace {
       this.projectsByFolderUri.set(
         uri,
         projects.map(project => {
+          project.close();
           project.clearAllDiagnostics();
           return this.createProject({
             config: project.config,

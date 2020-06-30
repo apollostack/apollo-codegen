@@ -30,6 +30,7 @@
     "apollo-link-http": "^1.5.5",
     "apollo-server-errors": "^2.0.2",
     "await-to-js": "^2.0.1",
+    "chokidar": "^3.4.0",
     "core-js": "^3.0.1",
     "cosmiconfig": "^5.0.6",
     "dotenv": "^8.0.0",
