@@ -21,7 +21,7 @@
 - `apollo-language-server`
   - <First `apollo-language-server` related entry goes here>
 - `apollo-tools`
-  - <First `apollo-tools` related entry goes here>
+  - Add undeclared peer dependency `graphql` [#2049](https://github.com/apollographql/apollo-tooling/pull/2049)
 - `vscode-apollo`
   - <First `vscode-apollo` related entry goes here>
 
