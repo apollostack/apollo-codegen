@@ -18,6 +18,9 @@
   "dependencies": {
     "apollo-env": "file:../apollo-env"
   },
+  "peerDependencies": {
+    "graphql": "^14.2.1 || ^15.0.0"
+  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
