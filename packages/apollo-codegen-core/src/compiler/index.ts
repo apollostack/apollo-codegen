@@ -414,7 +414,9 @@ class Compiler {
           );
         }
 
-        const fieldType = fieldDef.type;
+        const fieldType = selectionNode.required
+          ? new GraphQLNonNull(fieldDef.type)
+          : fieldDef.type;
         const typeNode = this.options.exposeTypeNodes
           ? stripProp("loc", parseType(fieldType.toString()))
           : undefined;
