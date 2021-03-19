@@ -70,6 +70,7 @@ export function transformSchema(
 
       return new GraphQLInterfaceType({
         ...config,
+        interfaces: () => config.interfaces.map(replaceNamedType),
         fields: () => replaceFields(config.fields)
       });
     } else if (isUnionType(type)) {
