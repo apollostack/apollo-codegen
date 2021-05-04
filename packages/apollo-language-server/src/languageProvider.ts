@@ -19,11 +19,12 @@ import {
 } from "vscode-languageserver";
 
 // should eventually be moved into this package, since we're overriding a lot of the existing behavior here
-import { getAutocompleteSuggestions } from "@apollographql/graphql-language-service-interface";
 import {
+  getAutocompleteSuggestions ,
   getTokenAtPosition,
-  getTypeInfo
-} from "@apollographql/graphql-language-service-interface/dist/getAutocompleteSuggestions";
+  getTypeInfo,
+} from "graphql-language-service-interface";
+import { IPosition } from "graphql-language-service-types";
 import { GraphQLWorkspace } from "./workspace";
 import { DocumentUri } from "./project/base";
 
@@ -56,7 +57,10 @@ import {
   isTypeSystemDefinitionNode,
   isTypeSystemExtensionNode,
   GraphQLError,
-  DirectiveLocation
+  DirectiveLocation,
+  GraphQLScalarType,
+  GraphQLUnionType,
+  GraphQLEnumType
 } from "graphql";
 import { highlightNodeForNode } from "./utilities/graphql";
 
@@ -128,11 +132,15 @@ export class GraphQLLanguageProvider {
     const positionInDocument = positionFromPositionInContainingDocument(
       document.source,
       position
-    );
+    ) as IPosition;
     const token = getTokenAtPosition(document.source.body, positionInDocument);
     const state =
       token.state.kind === "Invalid" ? token.state.prevState : token.state;
     const typeInfo = getTypeInfo(project.schema, token.state);
+
+    if (!state) {
+      return [];
+    }
 
     if (state.kind === "DirectiveLocation") {
       return DirectiveLocations.map(location => ({
@@ -153,11 +161,27 @@ export class GraphQLLanguageProvider {
       state.kind === "AliasedField"
     ) {
       const parentType = typeInfo.parentType;
-      const parentFields = {
-        ...(parentType.getFields() as {
-          [label: string]: GraphQLField<any, any>;
-        })
-      };
+      if (!parentType) {
+        return [];
+      }
+      const parentFields: {
+        [label: string]: GraphQLField<any, any>;
+      } = {};
+
+      if (!(
+        parentType instanceof GraphQLScalarType ||
+        parentType instanceof GraphQLEnumType ||
+        parentType instanceof GraphQLList ||
+        parentType instanceof GraphQLNonNull ||
+        parentType instanceof GraphQLUnionType
+      )) {
+        Object.assign(parentFields, {
+          ...(parentType.getFields() as {
+            [label: string]: GraphQLField<any, any>;
+          })
+        });
+      }
+
 
       if (isAbstractType(parentType)) {
         parentFields[TypeNameMetaFieldDef.name] = TypeNameMetaFieldDef;
