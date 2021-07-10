@@ -1,5 +1,5 @@
-import { relative } from "path";
-import minimatch = require("minimatch");
+import { resolve } from "path";
+import minimatch from "minimatch";
 import glob from "glob";
 import { invariant } from "@apollographql/apollo-tools";
 import URI from "vscode-uri";
@@ -31,7 +31,16 @@ export class FileSet {
   }
 
   includesFile(filePath: string): boolean {
-    return this.allFiles().includes(normalizeURI(filePath));
+    filePath = normalizeURI(filePath);
+
+    return (
+      this.includes.some(include => {
+        return minimatch(filePath, resolve(this.rootURI.fsPath, include));
+      }) &&
+      !this.excludes.some(exclude => {
+        return minimatch(filePath, resolve(this.rootURI.fsPath, exclude));
+      })
+    );
   }
 
   allFiles(): string[] {
