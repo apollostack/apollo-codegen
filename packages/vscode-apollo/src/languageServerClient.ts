@@ -2,7 +2,8 @@ import {
   ServerOptions,
   TransportKind,
   LanguageClientOptions,
-  LanguageClient
+  LanguageClient,
+  RevealOutputChannelOn
 } from "vscode-languageclient";
 import { workspace, OutputChannel } from "vscode";
 
@@ -61,7 +62,8 @@ export function getLanguageServerClient(
         )
       ]
     },
-    outputChannel
+    outputChannel,
+    revealOutputChannelOn: RevealOutputChannelOn.Never
   };
 
   return new LanguageClient(
