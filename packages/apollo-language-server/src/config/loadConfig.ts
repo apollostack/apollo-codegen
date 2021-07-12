@@ -21,7 +21,8 @@ const MODULE_NAME = "apollo";
 const defaultFileNames = [
   "package.json",
   `${MODULE_NAME}.config.js`,
-  `${MODULE_NAME}.config.ts`
+  `${MODULE_NAME}.config.ts`,
+  `${MODULE_NAME}.config.cjs`
 ];
 const envFileNames = [".env", ".env.local"];
 
@@ -29,6 +30,7 @@ const loaders = {
   // XXX improve types for config
   ".json": (cosmiconfig as any).loadJson as LoaderEntry,
   ".js": (cosmiconfig as any).loadJs as LoaderEntry,
+  ".cjs": (cosmiconfig as any).loadJs as LoaderEntry,
   ".ts": {
     async: TypeScriptLoader
   }

@@ -26,7 +26,7 @@ export class GraphQLServiceProject extends GraphQLProject {
   }: GraphQLServiceProjectConfig) {
     const fileSet = new FileSet({
       rootURI: config.configDirURI || rootURI,
-      includes: [...config.service.includes, ".env", "apollo.config.js"],
+      includes: [...config.service.includes, ".env", "apollo.config.js", "apollo.config.cjs"],
       excludes: config.service.excludes,
       configURI: config.configURI
     });

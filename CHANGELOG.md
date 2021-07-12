@@ -23,7 +23,7 @@
 - `apollo-tools`
   - <First `apollo-tools` related entry goes here>
 - `vscode-apollo`
-  - <First `vscode-apollo` related entry goes here>
+  - Adds support for àpollo.config.cjs`files, to allow Projects with `type: module`in package.json (Fixes #2342) [PR #2381](https://github.com/apollographql/apollo-tooling/pull/2381)
 
 ## apollo-tools@0.5.1
 - Remove dependency on `apollo-env`, so using this package no longer installs polyfills.

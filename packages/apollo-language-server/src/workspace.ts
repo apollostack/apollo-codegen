@@ -114,7 +114,7 @@ export class GraphQLWorkspace {
         -- ~/:user/server (GraphQLProject) as WorkspaceFolder
 
     */
-    const apolloConfigFiles: string[] = fg.sync("**/apollo.config.@(js|ts)", {
+    const apolloConfigFiles: string[] = fg.sync("**/apollo.config.@(js|ts|cjs)", {
       cwd: URI.parse(folder.uri).fsPath,
       absolute: true,
       ignore: "**/node_modules/**"
